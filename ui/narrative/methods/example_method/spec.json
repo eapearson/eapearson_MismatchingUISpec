@@ -22,7 +22,7 @@
             }
         }
     ],
-    "parameter_groups": [
+    "parameter-groups": [
         {
             "id": "group_1",
             "parameters": [
