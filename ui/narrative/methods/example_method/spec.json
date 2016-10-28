@@ -22,6 +22,18 @@
             }
         }
     ],
+    "parameter_groups": [
+        {
+            "id": "group_1",
+            "parameters": [
+                "parameter_1"
+            ],
+            "optional": true,
+            "allow_multiple": true,
+            "mapping": {},
+            "with_border": true
+        }
+    ],
     "behavior": {
         "service-mapping": {
             "url": "",
