@@ -21,7 +21,7 @@ public class EapearsonMismatchingUISpecServer extends JsonServerServlet {
     private static final long serialVersionUID = 1L;
     private static final String version = "0.0.1";
     private static final String gitUrl = "ssh://git@github.com/eapearson/eapearson_MismatchingUISpec";
-    private static final String gitCommitHash = "d773fa1e5ee07318dbb7de28fc5d7af463127b4d";
+    private static final String gitCommitHash = "3946305aaeafcdbc10519457b5d554695300011d";
 
     //BEGIN_CLASS_HEADER
     //END_CLASS_HEADER

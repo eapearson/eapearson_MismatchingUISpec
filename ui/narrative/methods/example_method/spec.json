@@ -47,6 +47,10 @@
                 {
                     "input_parameter": "parameter_1",
                     "target_argument_position": 1
+                },
+                {
+                    "input_parameter": "group_1",
+                    "target_argument_position": 2
                 }
             ],
             "output_mapping": [

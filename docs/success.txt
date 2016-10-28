@@ -1,0 +1,568 @@
+repo:
+
+
+git commit hash: 3946305aaeafcdbc10519457b5d554695300011d
+
+
+
+Registration log below:
+
+Registration started on 2016-10-28 21:41:42.591043 by eapearson
+Registration ID: 1477690902577_1458b934-20f0-4298-82c4-74d397692cbe
+Registration Parameters: {u'git_commit_hash': u'3946305aaeafcdbc10519457b5d554695300011d', u'git_url': u'https://github.com/eapearson/eapearson_MismatchingUISpec.git'}
+Attempting to clone into: /tmp/1477690902577_1458b934-20f0-4298-82c4-74d397692cbe/module_repo
+git clone https://github.com/eapearson/eapearson_MismatchingUISpec.git
+current commit hash at HEAD:3946305aaeafcdbc10519457b5d554695300011d
+git checkout 3946305aaeafcdbc10519457b5d554695300011d
+=====kbase.yaml parse:
+{'module-description': 'A KBase module',
+ 'module-name': 'eapearson_MismatchingUISpec',
+ 'module-version': '0.0.1',
+ 'owners': ['eapearson'],
+ 'service-language': 'java'}
+=====end kbase.yaml
+validating narrative method specifications
+    - validating method: example_method
+        - valid!
+validating local function specifications
+
+
+Building the docker image for dockerhub-ci.kbase.us/kbase:eapearson_mismatchinguispec.3946305aaeafcdbc10519457b5d554695300011d
+Step 1 : FROM kbase/kbase:sdkbase.latest
+[91m# Executing 1 build trigger...
+[0m
+Step 1 : RUN . /kb/dev_container/user-env.sh &&   rm /kb/runtime/java &&   ln -s /usr/lib/jvm/java-7-oracle /kb/runtime/java &&   cd /kb/dev_container/modules &&   rm -rf jars &&   git clone https://github.com/kbase/jars &&   rm -rf kb_sdk &&   git clone https://github.com/kbase/kb_sdk -b develop &&   cd /kb/dev_container/modules/jars &&   make && make deploy &&   cd /kb/dev_container/modules/kb_sdk &&   make && make deploy
+ ---> Using cache
+ ---> a08afbf6ddc6
+Step 2 : MAINTAINER KBase Developer
+ ---> Using cache
+ ---> 32249f56500c
+Step 3 : COPY ./ /kb/module
+ ---> f91c6e128f95
+Removing intermediate container 4d45b2c745ff
+Step 4 : RUN mkdir -p /kb/module/work
+ ---> Running in 4272afad328d
+ ---> 3d20f16151f9
+Removing intermediate container 4272afad328d
+Step 5 : RUN chmod 777 /kb/module
+ ---> Running in 260c91bc52aa
+ ---> c2657318821f
+Removing intermediate container 260c91bc52aa
+Step 6 : WORKDIR /kb/module
+ ---> Running in 023be11eb352
+ ---> 67cb4b38700a
+Removing intermediate container 023be11eb352
+Step 7 : RUN make all
+ ---> Running in f1cf2a0390f5
+kb-sdk compile eapearson_MismatchingUISpec.spec \
+		--out lib \
+		--plclname eapearson_MismatchingUISpec::eapearson_MismatchingUISpecClient \
+		--jsclname javascript/Client \
+		--pyclname eapearson_MismatchingUISpec.eapearson_MismatchingUISpecClient \
+		--javasrc src \
+		--java \
+		--javasrv \
+		--javapackage .;
+KBase SDK version 1.0.8 (commit 419f060bba3d96f809a14d4deab2f55112192a97)
+/kb/runtime/ant/bin/ant war -Djars.dir=/kb/deployment/lib/jars
+Buildfile: /kb/module/build.xml
+
+compile:
+    [mkdir] Created dir: /kb/module/classes
+
+    [mkdir] Created dir: /kb/module/dist
+    [javac] Compiling 3 source files to /kb/module/classes
+    [javac] Note: /kb/module/test/src/eapearsonmismatchinguispec/test/EapearsonMismatchingUISpecServerTest.java uses or overrides a deprecated API.
+
+    [javac] Note: Recompile with -Xlint:deprecation for details.
+
+     [copy] Copying 7 files to /kb/module/classes
+      [jar] Building jar: /kb/module/dist/EapearsonMismatchingUISpec.jar
+
+   [delete] Deleting directory /kb/module/classes
+
+
+war:
+
+    [mkdir] Created dir: /kb/module/dist/lib
+
+     [copy] Copying 17 files to /kb/module/dist/lib
+      [war] Building war: /kb/module/dist/EapearsonMismatchingUISpec.war
+   [delete] Deleting directory /kb/module/dist/lib
+    [mkdir] Created dir: /kb/module/scripts/webapps
+
+     [copy] Copying 1 file to /kb/module/scripts/webapps
+
+BUILD SUCCESSFUL
+Total time: 3 seconds
+chmod +x scripts/entrypoint.sh
+mkdir -p bin
+echo '#!/bin/bash' > scripts/start_server.sh
+echo 'script_dir=$(dirname "$(readlink -f "$0")")' >> scripts/start_server.sh
+echo 'cd scripts' >> scripts/start_server.sh
+echo 'java -cp /kb/deployment/lib/jars/jetty/jetty-start-7.0.0.jar:/kb/deployment/lib/jars/jetty/jetty-all-7.0.0.jar:/kb/deployment/lib/jars/servlet/servlet-api-2.5.jar \
+		-DKB_DEPLOYMENT_CONFIG=$script_dir/../deploy.cfg -Djetty.port=5000 org.eclipse.jetty.start.Main jetty.xml' >> scripts/start_server.sh
+chmod +x scripts/start_server.sh
+mkdir -p bin
+/kb/runtime/ant/bin/ant build-executable-script -Djars.dir=/kb/deployment/lib/jars -Dexec.cmd.file=run_eapearson_MismatchingUISpec_async_job.sh
+Buildfile: /kb/module/build.xml
+
+build-executable-script:
+
+BUILD SUCCESSFUL
+Total time: 0 seconds
+chmod +x bin/run_eapearson_MismatchingUISpec_async_job.sh
+echo '#!/bin/bash' > test/run_tests.sh
+echo 'script_dir=$(dirname "$(readlink -f "$0")")' >> test/run_tests.sh
+echo 'export KB_DEPLOYMENT_CONFIG=$script_dir/../deploy.cfg' >> test/run_tests.sh
+echo 'export KB_AUTH_TOKEN=`cat /kb/module/work/token`' >> test/run_tests.sh
+echo 'export JAVA_HOME=/usr/lib/jvm/java-7-oracle/' >> test/run_tests.sh
+echo '/kb/runtime/ant/bin/ant test -Djars.dir=/kb/deployment/lib/jars' >> test/run_tests.sh
+chmod +x test/run_tests.sh
+ ---> 1419e6da0747
+Removing intermediate container f1cf2a0390f5
+Step 8 : ENTRYPOINT ./scripts/entrypoint.sh
+ ---> Running in 3a84e2c9edf8
+ ---> c1f6a109cc61
+Removing intermediate container 3a84e2c9edf8
+Step 9 : CMD 
+ ---> Running in 995fd6d74494
+ ---> da9b7427ba8e
+Removing intermediate container 995fd6d74494
+Successfully built da9b7427ba8e
+Docker build successful.
+    Image Id:   sha256:da9b7427ba8ea5fa4eb48225f8aa71b39ab180ea1919869fb383ac1969e729c2
+    Image Name: dockerhub-ci.kbase.us/kbase:eapearson_mismatchinguispec.3946305aaeafcdbc10519457b5d554695300011d
+
+
+Preparing compilation report.
+
+Compilation report: creating docker container
+Running "report" entry-point command, container Id=7ae0533d8f0ad8321ad7c8e3f1704049bb58fbe74ee34250aa2d547313919e4c
+kb-sdk compile eapearson_MismatchingUISpec.spec \
+		--out lib \
+		--plclname eapearson_MismatchingUISpec::eapearson_MismatchingUISpecClient \
+		--jsclname javascript/Client \
+		--pyclname eapearson_MismatchingUISpec.eapearson_MismatchingUISpecClient \
+		--javasrc src \
+		--java \
+		--javasrv \
+		--javapackage .;
+KBase SDK version 1.0.8 (commit 419f060bba3d96f809a14d4deab2f55112192a97)
+Preparing SDK compilation report...
+Report was stored into /kb/module/./work/compile_report.json
+Docker container (Id=7ae0533d8f0ad8321ad7c8e3f1704049bb58fbe74ee34250aa2d547313919e4c) was cleaned up
+Report complete
+
+Pushing docker image to registry for dockerhub-ci.kbase.us/kbase:eapearson_mismatchinguispec.3946305aaeafcdbc10519457b5d554695300011d
+The push refers to a repository [dockerhub-ci.kbase.us/kbase]
+3300279a8cc3 - Preparing
+1f80973ae281 - Preparing
+6ea8d39a7243 - Preparing
+98b2f83acbca - Preparing
+835040798d1c - Preparing
+2a688cea2891 - Preparing
+4c91b207f47f - Preparing
+c7a68f76cfef - Preparing
+2a688cea2891 - Waiting
+4c91b207f47f - Waiting
+9755ee36deb4 - Preparing
+c7a68f76cfef - Waiting
+a54b6975b8e5 - Preparing
+5ae480770cb2 - Preparing
+a54b6975b8e5 - Waiting
+9755ee36deb4 - Waiting
+6fa0f598548d - Preparing
+5f70bf18a086 - Preparing
+5ae480770cb2 - Waiting
+6fa0f598548d - Waiting
+5f70bf18a086 - Preparing
+5f70bf18a086 - Preparing
+5f70bf18a086 - Preparing
+5f70bf18a086 - Preparing
+5f70bf18a086 - Preparing
+5f70bf18a086 - Preparing
+5f70bf18a086 - Preparing
+5f70bf18a086 - Preparing
+bdd472b91082 - Preparing
+517b8ff1a37a - Preparing
+e938b3181a6c - Preparing
+67f640f24387 - Preparing
+1e1ae45c7e8e - Preparing
+5f70bf18a086 - Waiting
+e938b3181a6c - Waiting
+517b8ff1a37a - Waiting
+67f640f24387 - Waiting
+83f88d518a1d - Preparing
+5f70bf18a086 - Preparing
+5f70bf18a086 - Preparing
+5f70bf18a086 - Preparing
+4d60af1f7817 - Preparing
+8c373badd12e - Preparing
+bdd472b91082 - Waiting
+4d60af1f7817 - Waiting
+1e1ae45c7e8e - Waiting
+1c22430d4327 - Preparing
+2eab3322a286 - Preparing
+83f88d518a1d - Waiting
+1c22430d4327 - Waiting
+5f70bf18a086 - Preparing
+d4ace4b87fc0 - Preparing
+5f70bf18a086 - Preparing
+2f5ad88709ca - Preparing
+e1ee70ebab01 - Preparing
+2803e0563a0e - Preparing
+ec4be36cf239 - Preparing
+5f70bf18a086 - Preparing
+2310ec1d403d - Preparing
+0d80d9f866c7 - Preparing
+cfb238046ae7 - Preparing
+6ec1b1f9d34c - Preparing
+5d5509abfc16 - Preparing
+21933260dd89 - Preparing
+63f4832a5676 - Preparing
+4c7d15ff9582 - Preparing
+5f70bf18a086 - Preparing
+917bee0a17ef - Preparing
+53b335014222 - Preparing
+5f70bf18a086 - Preparing
+5f70bf18a086 - Preparing
+70b84992e19b - Preparing
+1834390fa682 - Preparing
+5f70bf18a086 - Preparing
+5f70bf18a086 - Preparing
+90222f49bc4c - Preparing
+708fd576a927 - Preparing
+4aeeaca5ce76 - Preparing
+2eab3322a286 - Waiting
+d4ace4b87fc0 - Waiting
+21933260dd89 - Waiting
+2f5ad88709ca - Waiting
+708fd576a927 - Waiting
+0d80d9f866c7 - Waiting
+e1ee70ebab01 - Waiting
+2803e0563a0e - Waiting
+cfb238046ae7 - Waiting
+ec4be36cf239 - Waiting
+2310ec1d403d - Waiting
+6ec1b1f9d34c - Waiting
+5d5509abfc16 - Waiting
+917bee0a17ef - Waiting
+4c7d15ff9582 - Waiting
+4aeeaca5ce76 - Waiting
+63f4832a5676 - Waiting
+1834390fa682 - Waiting
+90222f49bc4c - Waiting
+53b335014222 - Waiting
+835040798d1c - Layer already exists
+1f80973ae281 - Pushing - 2.048 kB
+2a688cea2891 - Layer already exists
+98b2f83acbca - Pushing - [>                                                  ] 1.536 kB/127.5 kB
+98b2f83acbca - Pushing - [=>                                                 ] 3.072 kB/127.5 kB
+98b2f83acbca - Pushing - [=>                                                 ] 4.608 kB/127.5 kB
+98b2f83acbca - Pushing - [==>                                                ] 6.656 kB/127.5 kB
+98b2f83acbca - Pushing - [===>                                               ] 8.192 kB/127.5 kB
+98b2f83acbca - Pushing - [===>                                               ] 9.728 kB/127.5 kB
+98b2f83acbca - Pushing - [====>                                              ] 11.15 kB/127.5 kB
+98b2f83acbca - Pushing - [=====>                                             ] 13.42 kB/127.5 kB
+98b2f83acbca - Pushing - [======>                                            ] 15.69 kB/127.5 kB
+6ea8d39a7243 - Pushing -  2.56 kB
+98b2f83acbca - Pushing - [========>                                          ] 21.28 kB/127.5 kB
+98b2f83acbca - Pushing - [=========>                                         ] 23.25 kB/127.5 kB
+98b2f83acbca - Pushing - [==========>                                        ] 27.68 kB/127.5 kB
+98b2f83acbca - Pushing - [============>                                      ] 32.22 kB/127.5 kB
+98b2f83acbca - Pushing - [=============>                                     ] 33.52 kB/127.5 kB
+3300279a8cc3 - Pushing - [>                                                  ] 118.8 kB/10.98 MB
+98b2f83acbca - Pushing - [=============>                                     ] 34.82 kB/127.5 kB
+98b2f83acbca - Pushing - [==============>                                    ] 36.35 kB/127.5 kB
+98b2f83acbca - Pushing - [==============>                                    ] 37.89 kB/127.5 kB
+98b2f83acbca - Pushing - [===============>                                   ] 39.94 kB/127.5 kB
+98b2f83acbca - Pushing - [================>                                  ] 41.98 kB/127.5 kB
+98b2f83acbca - Pushing - [=================>                                 ] 43.85 kB/127.5 kB
+98b2f83acbca - Pushing - [=================>                                 ] 45.25 kB/127.5 kB
+98b2f83acbca - Pushing - [==================>                                ] 46.59 kB/127.5 kB
+98b2f83acbca - Pushing - [==================>                                ] 48.13 kB/127.5 kB
+98b2f83acbca - Pushing - [===================>                               ] 49.66 kB/127.5 kB
+98b2f83acbca - Pushing - [====================>                              ]  51.2 kB/127.5 kB
+98b2f83acbca - Pushing - [====================>                              ] 52.74 kB/127.5 kB
+98b2f83acbca - Pushing - [=====================>                             ] 54.27 kB/127.5 kB
+98b2f83acbca - Pushing - [=====================>                             ] 55.81 kB/127.5 kB
+98b2f83acbca - Pushing - [======================>                            ] 57.34 kB/127.5 kB
+98b2f83acbca - Pushing - [=======================>                           ] 58.88 kB/127.5 kB
+98b2f83acbca - Pushing - [=======================>                           ] 60.93 kB/127.5 kB
+98b2f83acbca - Pushing - [========================>                          ] 62.46 kB/127.5 kB
+98b2f83acbca - Pushing - [=========================>                         ]    64 kB/127.5 kB
+98b2f83acbca - Pushing - [=========================>                         ] 66.05 kB/127.5 kB
+98b2f83acbca - Pushing - [==========================>                        ] 67.58 kB/127.5 kB
+98b2f83acbca - Pushing - [===========================>                       ] 69.12 kB/127.5 kB
+98b2f83acbca - Pushing - [============================>                      ] 73.35 kB/127.5 kB
+98b2f83acbca - Pushing - [=============================>                     ] 74.75 kB/127.5 kB
+98b2f83acbca - Pushing - [=============================>                     ] 76.29 kB/127.5 kB
+98b2f83acbca - Pushing - [==============================>                    ] 77.82 kB/127.5 kB
+98b2f83acbca - Pushing - [===============================>                   ] 79.36 kB/127.5 kB
+98b2f83acbca - Pushing - [===============================>                   ] 81.04 kB/127.5 kB
+98b2f83acbca - Pushing - [================================>                  ] 82.43 kB/127.5 kB
+98b2f83acbca - Pushing - [================================>                  ] 83.97 kB/127.5 kB
+98b2f83acbca - Pushing - [=================================>                 ] 86.16 kB/127.5 kB
+98b2f83acbca - Pushing - [===================================>               ]    90 kB/127.5 kB
+98b2f83acbca - Pushing - [===================================>               ]  91.3 kB/127.5 kB
+98b2f83acbca - Pushing - [====================================>              ] 92.67 kB/127.5 kB
+98b2f83acbca - Pushing - [====================================>              ] 94.21 kB/127.5 kB
+98b2f83acbca - Pushing - [=====================================>             ] 95.74 kB/127.5 kB
+98b2f83acbca - Pushing - [======================================>            ] 97.28 kB/127.5 kB
+98b2f83acbca - Pushing - [======================================>            ] 99.29 kB/127.5 kB
+3300279a8cc3 - Pushing - [=>                                                 ] 249.9 kB/10.98 MB
+98b2f83acbca - Pushing - [=======================================>           ] 101.9 kB/127.5 kB
+98b2f83acbca - Pushing - [========================================>          ] 103.4 kB/127.5 kB
+98b2f83acbca - Pushing - [=========================================>         ] 104.8 kB/127.5 kB
+98b2f83acbca - Pushing - [=========================================>         ]   106 kB/127.5 kB
+98b2f83acbca - Pushing - [==========================================>        ] 107.5 kB/127.5 kB
+98b2f83acbca - Pushing - [==========================================>        ] 109.1 kB/127.5 kB
+98b2f83acbca - Pushing - [===========================================>       ] 111.1 kB/127.5 kB
+98b2f83acbca - Pushing - [============================================>      ] 113.2 kB/127.5 kB
+98b2f83acbca - Pushing - [============================================>      ] 114.7 kB/127.5 kB
+98b2f83acbca - Pushing - [=============================================>     ] 116.7 kB/127.5 kB
+98b2f83acbca - Pushing - [==============================================>    ] 118.3 kB/127.5 kB
+98b2f83acbca - Pushing - [===============================================>   ] 120.1 kB/127.5 kB
+98b2f83acbca - Pushing - [===============================================>   ] 122.4 kB/127.5 kB
+98b2f83acbca - Pushing - [================================================>  ] 124.4 kB/127.5 kB
+98b2f83acbca - Pushing - [=================================================> ]   126 kB/127.5 kB
+98b2f83acbca - Pushing - [=================================================> ] 127.5 kB/127.5 kB
+98b2f83acbca - Pushing - [==================================================>]   129 kB
+98b2f83acbca - Pushing - [==================================================>] 130.6 kB
+3300279a8cc3 - Pushing - [=>                                                 ] 380.9 kB/10.98 MB
+3300279a8cc3 - Pushing - [==>                                                ]   512 kB/10.98 MB
+3300279a8cc3 - Pushing - [==>                                                ] 643.1 kB/10.98 MB
+3300279a8cc3 - Pushing - [===>                                               ] 774.1 kB/10.98 MB
+98b2f83acbca - Pushing - [==================================================>] 132.1 kB
+98b2f83acbca - Pushing - [==================================================>] 133.4 kB
+98b2f83acbca - Pushing - [==================================================>] 134.8 kB
+98b2f83acbca - Pushing - [==================================================>] 136.2 kB
+98b2f83acbca - Pushing - [==================================================>] 138.2 kB
+98b2f83acbca - Pushing - [==================================================>] 139.8 kB
+98b2f83acbca - Pushing - [==================================================>] 141.6 kB
+98b2f83acbca - Pushing - [==================================================>] 143.8 kB
+98b2f83acbca - Pushing - [==================================================>] 146.3 kB
+98b2f83acbca - Pushing - [==================================================>] 148.5 kB
+98b2f83acbca - Pushing - [==================================================>] 150.5 kB
+3300279a8cc3 - Pushing - [====>                                              ] 905.2 kB/10.98 MB
+98b2f83acbca - Pushing - [==================================================>] 152.1 kB
+98b2f83acbca - Pushing - [==================================================>] 153.6 kB
+98b2f83acbca - Pushing - [==================================================>] 155.1 kB
+98b2f83acbca - Pushing - [==================================================>] 156.7 kB
+98b2f83acbca - Pushing - [==================================================>] 158.2 kB
+98b2f83acbca - Pushing - [==================================================>] 159.7 kB
+98b2f83acbca - Pushing - [==================================================>] 161.3 kB
+98b2f83acbca - Pushing - [==================================================>] 162.8 kB
+98b2f83acbca - Pushing - [==================================================>] 164.4 kB
+98b2f83acbca - Pushing - [==================================================>] 165.9 kB
+98b2f83acbca - Pushing - [==================================================>] 167.4 kB
+98b2f83acbca - Pushing - [==================================================>]   169 kB
+98b2f83acbca - Pushing - [==================================================>]   171 kB
+98b2f83acbca - Pushing - [==================================================>] 172.5 kB
+98b2f83acbca - Pushing - [==================================================>] 174.1 kB
+98b2f83acbca - Pushing - [==================================================>] 175.6 kB
+98b2f83acbca - Pushing - [==================================================>] 177.2 kB
+98b2f83acbca - Pushing - [==================================================>] 178.7 kB
+98b2f83acbca - Pushing - [==================================================>] 180.2 kB
+98b2f83acbca - Pushing - [==================================================>] 181.8 kB
+98b2f83acbca - Pushing - [==================================================>] 183.8 kB
+98b2f83acbca - Pushing - [==================================================>] 185.9 kB
+98b2f83acbca - Pushing - [==================================================>] 187.4 kB
+98b2f83acbca - Pushing - [==================================================>] 188.8 kB
+98b2f83acbca - Pushing - [==================================================>] 190.5 kB
+98b2f83acbca - Pushing - [==================================================>] 194.1 kB
+98b2f83acbca - Pushing - [==================================================>] 195.4 kB
+98b2f83acbca - Pushing - [==================================================>] 200.6 kB
+98b2f83acbca - Pushing - [==================================================>] 201.9 kB
+98b2f83acbca - Pushing - [==================================================>] 203.8 kB
+3300279a8cc3 - Pushing - [====>                                              ] 1.036 MB/10.98 MB
+98b2f83acbca - Pushing - [==================================================>] 205.3 kB
+98b2f83acbca - Pushing - [==================================================>] 207.4 kB
+98b2f83acbca - Pushing - [==================================================>] 208.9 kB
+98b2f83acbca - Pushing - [==================================================>] 212.5 kB
+98b2f83acbca - Pushing - [==================================================>] 224.6 kB
+98b2f83acbca - Pushing - [==================================================>] 234.2 kB
+98b2f83acbca - Pushing - [==================================================>] 236.9 kB
+98b2f83acbca - Pushing - [==================================================>] 242.8 kB
+98b2f83acbca - Pushing - [==================================================>] 244.2 kB
+98b2f83acbca - Pushing - [==================================================>]   250 kB
+98b2f83acbca - Pushing - [==================================================>] 253.6 kB
+98b2f83acbca - Pushing - [==================================================>] 257.1 kB
+98b2f83acbca - Pushing - [==================================================>] 260.8 kB
+98b2f83acbca - Pushing - [==================================================>] 264.4 kB
+98b2f83acbca - Pushing - [==================================================>] 265.7 kB
+3300279a8cc3 - Pushing - [=====>                                             ] 1.167 MB/10.98 MB
+98b2f83acbca - Pushing - [==================================================>] 267.3 kB
+98b2f83acbca - Pushing - [==================================================>] 270.9 kB
+98b2f83acbca - Pushing - [==================================================>] 273.3 kB
+98b2f83acbca - Pushing - [==================================================>] 274.9 kB
+98b2f83acbca - Pushing - [==================================================>] 276.5 kB
+98b2f83acbca - Pushing - [==================================================>]   278 kB
+98b2f83acbca - Pushing - [==================================================>] 282.7 kB
+4c91b207f47f - Layer already exists
+98b2f83acbca - Pushing - [==================================================>] 284.2 kB
+98b2f83acbca - Pushing - [==================================================>] 285.7 kB
+98b2f83acbca - Pushing - [==================================================>] 287.2 kB
+98b2f83acbca - Pushing - [==================================================>] 290.2 kB
+98b2f83acbca - Pushing - [==================================================>] 292.6 kB
+98b2f83acbca - Pushing - [==================================================>] 293.9 kB
+3300279a8cc3 - Pushing - [=====>                                             ] 1.298 MB/10.98 MB
+3300279a8cc3 - Pushing - [======>                                            ]  1.43 MB/10.98 MB
+3300279a8cc3 - Pushing - [=======>                                           ] 1.561 MB/10.98 MB
+c7a68f76cfef - Layer already exists
+1f80973ae281 - Pushed
+3300279a8cc3 - Pushing - [=======>                                           ] 1.692 MB/10.98 MB
+3300279a8cc3 - Pushing - [========>                                          ] 1.823 MB/10.98 MB
+6ea8d39a7243 - Pushed
+3300279a8cc3 - Pushing - [========>                                          ] 1.954 MB/10.98 MB
+9755ee36deb4 - Layer already exists
+a54b6975b8e5 - Layer already exists
+3300279a8cc3 - Pushing - [=========>                                         ] 2.085 MB/10.98 MB
+3300279a8cc3 - Pushing - [==========>                                        ] 2.216 MB/10.98 MB
+5f70bf18a086 - Layer already exists
+6fa0f598548d - Layer already exists
+3300279a8cc3 - Pushing - [==========>                                        ] 2.347 MB/10.98 MB
+5ae480770cb2 - Layer already exists
+98b2f83acbca - Pushed
+bdd472b91082 - Layer already exists
+3300279a8cc3 - Pushing - [===========>                                       ] 2.478 MB/10.98 MB
+517b8ff1a37a - Layer already exists
+e938b3181a6c - Layer already exists
+3300279a8cc3 - Pushing - [===========>                                       ] 2.609 MB/10.98 MB
+1e1ae45c7e8e - Layer already exists
+67f640f24387 - Layer already exists
+83f88d518a1d - Layer already exists
+3300279a8cc3 - Pushing - [============>                                      ]  2.74 MB/10.98 MB
+4d60af1f7817 - Layer already exists
+8c373badd12e - Layer already exists
+2eab3322a286 - Layer already exists
+3300279a8cc3 - Pushing - [=============>                                     ] 2.871 MB/10.98 MB
+1c22430d4327 - Layer already exists
+d4ace4b87fc0 - Layer already exists
+3300279a8cc3 - Pushing - [=============>                                     ] 3.002 MB/10.98 MB
+2f5ad88709ca - Layer already exists
+e1ee70ebab01 - Layer already exists
+3300279a8cc3 - Pushing - [==============>                                    ] 3.133 MB/10.98 MB
+2803e0563a0e - Layer already exists
+ec4be36cf239 - Layer already exists
+3300279a8cc3 - Pushing - [==============>                                    ] 3.265 MB/10.98 MB
+2310ec1d403d - Layer already exists
+0d80d9f866c7 - Layer already exists
+cfb238046ae7 - Layer already exists
+3300279a8cc3 - Pushing - [===============>                                   ] 3.396 MB/10.98 MB
+6ec1b1f9d34c - Layer already exists
+21933260dd89 - Layer already exists
+5d5509abfc16 - Layer already exists
+3300279a8cc3 - Pushing - [================>                                  ] 3.527 MB/10.98 MB
+63f4832a5676 - Layer already exists
+3300279a8cc3 - Pushing - [================>                                  ] 3.658 MB/10.98 MB
+4c7d15ff9582 - Layer already exists
+3300279a8cc3 - Pushing - [=================>                                 ] 3.789 MB/10.98 MB
+917bee0a17ef - Layer already exists
+53b335014222 - Layer already exists
+70b84992e19b - Layer already exists
+3300279a8cc3 - Pushing - [=================>                                 ]  3.92 MB/10.98 MB
+1834390fa682 - Layer already exists
+708fd576a927 - Layer already exists
+3300279a8cc3 - Pushing - [==================>                                ] 4.051 MB/10.98 MB
+4aeeaca5ce76 - Layer already exists
+90222f49bc4c - Layer already exists
+3300279a8cc3 - Pushing - [===================>                               ] 4.182 MB/10.98 MB
+3300279a8cc3 - Pushing - [===================>                               ] 4.313 MB/10.98 MB
+3300279a8cc3 - Pushing - [====================>                              ] 4.444 MB/10.98 MB
+3300279a8cc3 - Pushing - [====================>                              ] 4.575 MB/10.98 MB
+3300279a8cc3 - Pushing - [=====================>                             ] 4.706 MB/10.98 MB
+3300279a8cc3 - Pushing - [======================>                            ] 4.837 MB/10.98 MB
+3300279a8cc3 - Pushing - [======================>                            ] 4.968 MB/10.98 MB
+3300279a8cc3 - Pushing - [=======================>                           ]   5.1 MB/10.98 MB
+3300279a8cc3 - Pushing - [=======================>                           ] 5.231 MB/10.98 MB
+3300279a8cc3 - Pushing - [========================>                          ] 5.362 MB/10.98 MB
+3300279a8cc3 - Pushing - [========================>                          ] 5.484 MB/10.98 MB
+3300279a8cc3 - Pushing - [=========================>                         ] 5.604 MB/10.98 MB
+3300279a8cc3 - Pushing - [==========================>                        ] 5.735 MB/10.98 MB
+3300279a8cc3 - Pushing - [==========================>                        ] 5.866 MB/10.98 MB
+3300279a8cc3 - Pushing - [===========================>                       ] 5.997 MB/10.98 MB
+3300279a8cc3 - Pushing - [===========================>                       ] 6.128 MB/10.98 MB
+3300279a8cc3 - Pushing - [============================>                      ] 6.259 MB/10.98 MB
+3300279a8cc3 - Pushing - [=============================>                     ]  6.39 MB/10.98 MB
+3300279a8cc3 - Pushing - [=============================>                     ] 6.521 MB/10.98 MB
+3300279a8cc3 - Pushing - [==============================>                    ] 6.652 MB/10.98 MB
+3300279a8cc3 - Pushing - [==============================>                    ] 6.783 MB/10.98 MB
+3300279a8cc3 - Pushing - [===============================>                   ] 6.915 MB/10.98 MB
+3300279a8cc3 - Pushing - [================================>                  ] 7.046 MB/10.98 MB
+3300279a8cc3 - Pushing - [================================>                  ] 7.177 MB/10.98 MB
+3300279a8cc3 - Pushing - [=================================>                 ] 7.308 MB/10.98 MB
+3300279a8cc3 - Pushing - [=================================>                 ] 7.439 MB/10.98 MB
+3300279a8cc3 - Pushing - [==================================>                ]  7.57 MB/10.98 MB
+3300279a8cc3 - Pushing - [===================================>               ] 7.701 MB/10.98 MB
+3300279a8cc3 - Pushing - [===================================>               ] 7.832 MB/10.98 MB
+3300279a8cc3 - Pushing - [====================================>              ] 7.963 MB/10.98 MB
+3300279a8cc3 - Pushing - [====================================>              ] 8.094 MB/10.98 MB
+3300279a8cc3 - Pushing - [=====================================>             ] 8.225 MB/10.98 MB
+3300279a8cc3 - Pushing - [======================================>            ] 8.356 MB/10.98 MB
+3300279a8cc3 - Pushing - [======================================>            ] 8.487 MB/10.98 MB
+3300279a8cc3 - Pushing - [=======================================>           ] 8.618 MB/10.98 MB
+3300279a8cc3 - Pushing - [=======================================>           ]  8.75 MB/10.98 MB
+3300279a8cc3 - Pushing - [========================================>          ] 8.881 MB/10.98 MB
+3300279a8cc3 - Pushing - [=========================================>         ] 9.012 MB/10.98 MB
+3300279a8cc3 - Pushing - [=========================================>         ] 9.143 MB/10.98 MB
+3300279a8cc3 - Pushing - [==========================================>        ] 9.274 MB/10.98 MB
+3300279a8cc3 - Pushing - [==========================================>        ] 9.405 MB/10.98 MB
+3300279a8cc3 - Pushing - [===========================================>       ] 9.536 MB/10.98 MB
+3300279a8cc3 - Pushing - [============================================>      ] 9.667 MB/10.98 MB
+3300279a8cc3 - Pushing - [============================================>      ] 9.798 MB/10.98 MB
+3300279a8cc3 - Pushing - [=============================================>     ] 9.929 MB/10.98 MB
+3300279a8cc3 - Pushing - [=============================================>     ] 10.06 MB/10.98 MB
+3300279a8cc3 - Pushing - [==============================================>    ] 10.19 MB/10.98 MB
+3300279a8cc3 - Pushing - [==============================================>    ] 10.32 MB/10.98 MB
+3300279a8cc3 - Pushing - [===============================================>   ] 10.45 MB/10.98 MB
+3300279a8cc3 - Pushing - [================================================>  ] 10.58 MB/10.98 MB
+3300279a8cc3 - Pushing - [================================================>  ] 10.72 MB/10.98 MB
+3300279a8cc3 - Pushing - [=================================================> ] 10.85 MB/10.98 MB
+3300279a8cc3 - Pushing - [=================================================> ] 10.98 MB/10.98 MB
+3300279a8cc3 - Pushing - [==================================================>] 11.01 MB
+3300279a8cc3 - Pushed
+eapearson_mismatchinguispec.3946305aaeafcdbc10519457b5d554695300011d: digest: sha256:304af4715ce58112a9d9f08a2a2cbf30365cd316fcc4d37de1473682fe2539f0 size: 47653
+[aux={u'Tag': u'eapearson_mismatchinguispec.3946305aaeafcdbc10519457b5d554695300011d', u'Digest': u'sha256:304af4715ce58112a9d9f08a2a2cbf30365cd316fcc4d37de1473682fe2539f0', u'Size': 47653}] 
+done pushing docker image to registry for dockerhub-ci.kbase.us/kbase:eapearson_mismatchinguispec.3946305aaeafcdbc10519457b5d554695300011d
+
+new info: {'description': 'A KBase module',
+ 'dynamic_service': 0,
+ 'language': 'java',
+ 'local_functions': 0}
+new owners list: [{'kb_username': 'eapearson'}]
+new dev version object: {'compilation_report': {u'function_places': {},
+                        u'functions': {u'example_method': {u'comment': u'Insert your typespec information here.',
+                                                           u'input': [{u'comment': None,
+                                                                       u'type': u'string'},
+                                                                      {u'comment': None,
+                                                                       u'type': u'string'}],
+                                                           u'name': u'example_method',
+                                                           u'output': [],
+                                                           u'place': None}},
+                        u'impl_file_path': u'lib/src/eapearsonmismatchinguispec/EapearsonMismatchingUISpecServer.java',
+                        u'module_name': u'eapearson_MismatchingUISpec',
+                        u'sdk_git_commit': u'419f060bba3d96f809a14d4deab2f55112192a97',
+                        u'sdk_version': u'1.0.8',
+                        u'spec_files': [{u'content': u'/*\nA KBase module: eapearson_MismatchingUISpec\n*/\n\nmodule eapearson_MismatchingUISpec {\n    /*\n        Insert your typespec information here.\n    */\n\n    funcdef example_method(string ws, string p) returns ();\n};\n',
+                                         u'file_name': u'eapearson_MismatchingUISpec.spec',
+                                         u'is_main': 1}]},
+ 'docker_img_name': 'dockerhub-ci.kbase.us/kbase:eapearson_mismatchinguispec.3946305aaeafcdbc10519457b5d554695300011d',
+ 'dynamic_service': 0,
+ 'git_commit_hash': '3946305aaeafcdbc10519457b5d554695300011d',
+ 'git_commit_message': 'Fix the display.yaml, put the group in the right place.',
+ 'local_functions': [],
+ 'module_description': 'A KBase module',
+ 'module_name': 'eapearson_MismatchingUISpec',
+ 'module_name_lc': 'eapearson_mismatchinguispec',
+ 'narrative_methods': ['example_method'],
+ 'notes': '',
+ 'registration_id': '1477690902577_1458b934-20f0-4298-82c4-74d397692cbe',
+ 'released': 0,
+ 'released_timestamp': None,
+ 'timestamp': 1477690902577,
+ 'version': '0.0.1'}
+registering specs with NMS
+
+done
