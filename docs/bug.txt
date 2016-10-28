@@ -1,0 +1,36 @@
+
+github repo: https://github.com/eapearson/eapearson_MismatchingUISpec.git
+
+git commit hash: 8dd3201313b1b7245f159ea63ec3afe642816760
+
+Registration log:
+
+Registration started on 2016-10-28 21:51:38.024537 by eapearson
+Registration ID: 1477691498011_bf64ee0e-d742-4489-98f4-11312a7f63ff
+Registration Parameters: {u'git_commit_hash': u'8dd3201313b1b7245f159ea63ec3afe642816760', u'git_url': u'https://github.com/eapearson/eapearson_MismatchingUISpec.git'}
+Attempting to clone into: /tmp/1477691498011_bf64ee0e-d742-4489-98f4-11312a7f63ff/module_repo
+git clone https://github.com/eapearson/eapearson_MismatchingUISpec.git
+current commit hash at HEAD:8dd3201313b1b7245f159ea63ec3afe642816760
+git checkout 8dd3201313b1b7245f159ea63ec3afe642816760
+=====kbase.yaml parse:
+{'module-description': 'A KBase module',
+ 'module-name': 'eapearson_MismatchingUISpec',
+ 'module-version': '0.0.1',
+ 'owners': ['eapearson'],
+ 'service-language': 'java'}
+=====end kbase.yaml
+validating narrative method specifications
+    - validating method: example_method
+        - not valid!
+        - error: An unknown error occured while parsing the spec.json file
+Traceback (most recent call last):
+  File "/kb/deployment/lib/biokbase/catalog/registrar.py", line 111, in start_registration
+    self.sanity_checks_and_parse(basedir, git_commit_hash)
+  File "/kb/deployment/lib/biokbase/catalog/registrar.py", line 292, in sanity_checks_and_parse
+    self.validate_method_specs(basedir)
+  File "/kb/deployment/lib/biokbase/catalog/registrar.py", line 466, in validate_method_specs
+    raise ValueError('Invalid narrative method specification ('+m+')')
+ValueError: Invalid narrative method specification (example_method)
+
+BUILD_ERROR: Invalid narrative method specification (example_method)
+

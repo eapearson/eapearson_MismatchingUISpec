@@ -38,7 +38,7 @@ parameters :
             The first parameter that needs to be entered to drive the method. This might be the first of many.
 
 parameter-groups:
-    group_1x:
+    group_1:
         ui-name: First group_1
         short-hint: The first group_1
         long-hint: The long hint
